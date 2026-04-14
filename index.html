@@ -827,8 +827,7 @@ document.addEventListener("DOMContentLoaded", function () {
     slideUrls.forEach(url => { const img = new Image(); img.src = url; });
     // 預載結束 ↑
 
-    function goTo(n){ ... }  // 以下不變
-
+    
     function goTo(n){
       cur = (n + total) % total;
       track.style.transform = `translateX(-${cur * 100}%)`;
@@ -1425,7 +1424,7 @@ setTimeout(()=>{
           windTimer=setTimeout(()=>{ isWindBlown=false; if(!isWalking&&!isSleeping) setSkin('normal'); },2500);
         }
         // ★ 手機版：滾動時也觸發位置更新（讓倉鼠跟著畫面感覺移動）
-        if(isMobile&&!isDragging&&!isWalking) {
+        if(isMobile()&&!isDragging&&!isWalking) {
           updateGlow();
         }
       });
