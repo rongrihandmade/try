@@ -816,6 +816,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const total = dots.length;
     let cur = 0, timer = null;
 
+      // ← 加入這段預載
+    const slideUrls = [
+        'https://res.cloudinary.com/dkon1zhws/image/upload/product1.jpg',
+        'https://res.cloudinary.com/dkon1zhws/image/upload/product3.jpg',
+        'https://res.cloudinary.com/dkon1zhws/image/upload/product5.jpg',
+        'https://res.cloudinary.com/dkon1zhws/image/upload/product8.jpg',
+        'https://res.cloudinary.com/dkon1zhws/image/upload/product10.jpg',
+    ];
+    slideUrls.forEach(url => { const img = new Image(); img.src = url; });
+    // 預載結束 ↑
+
+    function goTo(n){ ... }  // 以下不變
+
     function goTo(n){
       cur = (n + total) % total;
       track.style.transform = `translateX(-${cur * 100}%)`;
@@ -950,7 +963,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     function setSkin(k) { petImg.src = SK[k] || SK.normal; }
 
-    const isMobile = window.innerWidth <= 600;
+   function isMobile() { return window.innerWidth <= 600; }
     // ★ 手機版：初始位置設為畫面中央，而非右下角
     let cx = isMobile ? window.innerWidth * 0.5 : window.innerWidth / 2;
     let cy = isMobile ? window.innerHeight * 0.5 : window.innerHeight * 0.7;
@@ -1143,7 +1156,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       const preload=new Image();
       preload.onload=()=>{ if(imgEl){ imgEl.style.display='block'; imgEl.src=pick.src; } };
-preload.onerror=()=>{ if(imgEl){ imgEl.style.display='none'; } isBusy=false; schedNext(3000); };
+preload.onerror = () => {
+    if(imgEl){ imgEl.style.display='none'; }
+    hasShownMemory = false;  // ← 加這行，失敗時允許重試
+    isBusy = false;
+    schedNext(3000);
+};
       preload.src=pick.src;
       setTimeout(()=>{
         setSkin('happySeed');
@@ -1203,7 +1221,7 @@ setTimeout(()=>{
           if(!isWindBlown){ if(r>.75) setSkin('boredTable'); else if(r>.5) setSkin('tired'); else setSkin('normal'); }
           resetSleepTimer();
           // ★ 手機版：走完一段路後，排程下一次自動漫步
-          if(isMobile) scheduleMobileWalk();
+          if(isMobile()) scheduleMobileWalk();
         }
       }
       animFrame=requestAnimationFrame(step);
@@ -1243,9 +1261,14 @@ setTimeout(()=>{
       },15000);
     }
 
-    function checkSectionDlg() {
-      if(rnd(1)<.65) return;
-      const el=document.elementFromPoint(cx+40,cy+40);
+   function checkSectionDlg() {
+    if(rnd(1)<.65) return;
+    // cx/cy 是 viewport 座標，elementFromPoint 也是 viewport 座標，本身沒問題
+    // 但要確保座標在畫面範圍內才查詢
+    const checkX = Math.min(cx+40, window.innerWidth-1);
+    const checkY = Math.min(cy+40, window.innerHeight-1);
+    const el = document.elementFromPoint(checkX, checkY);
+       
       if(!el) return;
       const sec=el.closest('section');
       if(!sec) return;
@@ -1483,7 +1506,7 @@ setTimeout(()=>{
           resetSleepTimer();
           schedNext(3000);
           // ★ 手機版：落地後也啟動自動漫步
-          if(isMobile) scheduleMobileWalk();
+          if(isMobile()) scheduleMobileWalk();
         }
       }
       requestAnimationFrame(bounce);
@@ -1493,8 +1516,18 @@ setTimeout(()=>{
     document.addEventListener('mousemove',e=>{ if(isDragging) moveDrag(e.clientX,e.clientY); });
     document.addEventListener('mouseup',()=>{ if(isDragging) endDrag(); });
     petBody.addEventListener('touchstart',e=>{ e.preventDefault(); startDrag(e.touches[0].clientX,e.touches[0].clientY); },{passive:false});
-    document.addEventListener('touchmove',e=>{ if(!isDragging) return; e.preventDefault(); moveDrag(e.touches[0].clientX,e.touches[0].clientY); },{passive:false});
-    document.addEventListener('touchend',()=>{ if(isDragging) endDrag(); });
+// document 上保留 passive 版本處理一般捲動
+document.addEventListener('touchmove', e => {
+    if(!isDragging) return;
+    moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+}, {passive:true});
+
+// 只在 petBody 上阻止預設行為
+petBody.addEventListener('touchmove', e => {
+    if(!isDragging) return;
+    e.preventDefault();
+    moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+}, {passive:false});    document.addEventListener('touchend',()=>{ if(isDragging) endDrag(); });
 
     petBody.addEventListener('click',e=>{
       if(isDragging) return;
@@ -1560,7 +1593,7 @@ setTimeout(()=>{
     schedNext(4000);
 
     // ★ 手機版：頁面載入後立即啟動自動漫步
-    if(isMobile) {
+    if(isMobile()) {
       setTimeout(()=>{ scheduleMobileWalk(); }, 1500);
     }
 
