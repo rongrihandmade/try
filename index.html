@@ -1686,7 +1686,7 @@ petBody.addEventListener('touchmove', e => {
     } catch(e){}
   }
 
-  // 葵瓜子叮叮聲
+ // 葵瓜子叮叮聲 (播放音效)
   function playSeedSound(){
     try {
       const ctx = getCtx();
@@ -1700,26 +1700,43 @@ petBody.addEventListener('touchmove', e => {
           osc.frequency.setValueAtTime(1200 + i*180, t);
           osc.frequency.exponentialRampToValueAtTime(800 + i*100, t + 0.12);
           gain.gain.setValueAtTime(0.12, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
-          osc.start(t); osc.stop(t + 0.15);
-        }, i * 90);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+          osc.start(t); osc.stop(t + 0.12);
+        }, i * 70);
       }
     } catch(e){}
   }
 
-  // 掛載到倉鼠點擊
-  const petBody = document.getElementById('pet-body');
-  if(petBody){
-    petBody.addEventListener('click', ()=>{ playHamsterSound(); });
+  // --- 彩蛋觸發核心：讓點擊 Logo 跟音效、動畫連起來 ---
+  const seedLogo = document.getElementById('nav-logo-seed');
+
+  if (seedLogo) {
+    seedLogo.addEventListener('click', function(e) {
+      e.preventDefault(); // 防止網頁重整
+      playSeedSound();    // 播放聲音
+      createFallingSeed(); // 掉下瓜子
+    });
   }
 
-  // 掛載到 Logo 葵瓜子
-  const logoBtn = document.getElementById('nav-logo-seed');
-  if(logoBtn){
-    logoBtn.addEventListener('click', ()=>{ playSeedSound(); });
-  }
+  // 產生掉落瓜子的功能
+  function createFallingSeed() {
+    const seed = document.createElement('div');
+    seed.innerHTML = '🌻'; // 您也可以換成 🐹
+    seed.style.cssText = `
+      position: fixed;
+      top: -50px;
+      left: ${Math.random() * 90 + 5}vw;
+      font-size: 28px;
+      z-index: 9999;
+      pointer-events: none;
+      animation: seedDrop 2.5s ease-in forwards;
+    `;
+    document.body.appendChild(seed);
 
-})();
+    // 2.5秒後自動清除
+    setTimeout(() => { seed.remove(); }, 2500);
+  }
+        
          </script>
 </body>
 </html>
