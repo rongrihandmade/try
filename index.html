@@ -464,18 +464,19 @@
 </h2>
         <p class="story-slogan-gold">將記憶收進木框，讓生命力破框而出。</p>
         <div class="story-main-text">
-<p class="drop-cap">很多人來找我們，不是因為想買一件作品——而是開始害怕，有一天會慢慢忘記牠的樣子。我們做的，是把那些還沒準備好放下的想念，變成可以被握在手心裡的存在。</p>            <div class="story-detail-grid">
-                <div class="story-detail-item">
-                   <span class="num">01</span>
-<h3>品牌理念：生命力與溫度</h3>
-                    <p>手作的魅力在於那些無法被完全複製的細微之處。生命力往往存在於框架之外，因此我們的作品不僅是單純的模仿，更是捕捉那些靈動特徵，讓作品在框架之外，展現出獨有的生命力與溫暖神韻。</p>
-                </div>
-                <div class="story-detail-item">
-                    <span class="num">02</span>
-<h3>我們的堅持：每一份唯一</h3>
-                    <p>在「絨日」，每一件作品都是慢工細活的結晶。從觀察神態、選色到塑形，我們投入大量的時間與耐心，確保每一隻創作出的小生命都擁有獨一無二的靈魂。</p>
-                </div>
-            </div>
+<p class="drop-cap">很多人來找我們，不是因為想買一件作品——而是開始害怕，有一天會慢慢忘記牠的樣子。我們做的，是把那些還沒準備好放下的想念，變成可以被握在手心裡的存在。</p>            
+            <div class="story-detail-grid">
+  <div class="story-detail-item">
+    <span class="num">01</span>
+    <h3>品牌理念：生命力與溫度</h3>
+    <p>手作的魅力在於那些無法被完全複製的細微之處。生命力往往存在於框架之外，因此我們的作品不僅是單純的模仿，更是捕捉那些靈動特徵，讓作品在框架之外，展現出獨有的生命力與溫暖神韻。</p>
+  </div>
+  <div class="story-detail-item">
+    <span class="num">02</span>
+    <h3>我們的堅持：每一份唯一</h3>
+    <p>在「絨日」，每一件作品都是慢工細活的結晶。從觀察神態、選色到塑形，我們投入大量的時間與耐心，確保每一隻創作出的小生命都擁有獨一無二的靈魂。</p>
+  </div>
+</div>
         </div>
     </div>
 </section>
@@ -1359,20 +1360,41 @@ const sectionDialogs = {
   contact: ["不知道從何說起也沒關係 😊", "先來聊聊牠吧，LINE 最快 📬"],
 };
 
+const sectionDialogs = {
+  about:   ["你也有想念的孩子嗎？🐾", "每一針，都是捨不得忘記的心情 💕"],
+  shop:    ["這裡有現貨，可以先看看 🛍️", "Pinkoi 和蝦皮都有～"],
+  process: ["如果你準備好了，我可以陪你 🧶", "把牠的照片準備好，我們來聊聊 📸"],
+  contact: ["不知道從何說起也沒關係 😊", "先來聊聊牠吧，LINE 最快 📬"],
+};
+
+// 全域冷卻：任一 section 觸發後，8 秒內其他 section 不再觸發
+let sectionDlgCooldown = false;
+
 Object.entries(sectionDialogs).forEach(([id, lines]) => {
   const el = document.getElementById(id);
   if (!el || !('IntersectionObserver' in window)) return;
-  let triggered = false;
+  let lastTriggered = 0;
+
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (e.isIntersecting && !triggered && !isDragging && !isBusy) {
-        triggered = true;
+      const now = Date.now();
+      if (
+        e.isIntersecting &&
+        !sectionDlgCooldown &&
+        !isDragging &&
+        !isBusy &&
+        now - lastTriggered > 20000   // 同一 section 自身也限 20 秒
+      ) {
+        sectionDlgCooldown = true;
+        lastTriggered = now;
         const line = lines[Math.floor(rnd(lines.length))];
         showDlg(line, 5000);
-        setTimeout(() => { triggered = false; }, 20000); // 20秒後可再觸發
+        // 8 秒後解鎖，允許下一個 section 說話
+        setTimeout(() => { sectionDlgCooldown = false; }, 8000);
       }
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.4 });   // 稍微提高到 0.4，減少邊緣觸發
+
   obs.observe(el);
 });
     let galleryTriggered=false;
@@ -1380,8 +1402,8 @@ Object.entries(sectionDialogs).forEach(([id, lines]) => {
     if(gallerySection&&'IntersectionObserver' in window){
       const galleryObs=new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
-          if(e.isIntersecting&&!galleryTriggered&&!isDragging&&!isSleeping){
-            galleryTriggered=true;
+if(e.isIntersecting&&!galleryTriggered&&!isDragging&&!isSleeping&&!sectionDlgCooldown){            galleryTriggered=true;sectionDlgCooldown = true;  // ← 新增這行
+setTimeout(()=>{ sectionDlgCooldown = false; }, 8000);  // ← 新增這行
             const targetX=clamp(window.innerWidth*.5,60,window.innerWidth-100);
             setSkin('excited');
             showDlg("等等！我去看一下作品！🏃",2000);
