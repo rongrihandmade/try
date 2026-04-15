@@ -61,14 +61,23 @@ header { text-align: center; padding: 140px 20px 60px; }
 
 /* --- 品牌故事 --- */
 .about-story-curated { max-width: 900px; margin: 0 auto 120px; padding: 0 25px; scroll-margin-top: 100px; }
-.story-border-box { position: relative; border: 1px solid rgba(166, 139, 124, 0.3); padding: 70px 40px; background: rgba(255,255,255,0.5); }
+.story-border-box { position: relative; border: 1px solid rgba(166, 139, 124, 0.3); padding: 70px 40px; background: rgba(255,255,255,0.6); backdrop-filter: blur(4px); }
 .story-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--bg-color); padding: 0 20px; font-size: 0.75rem; letter-spacing: 4px; color: var(--text-light); }
 .story-title { font-family: 'Noto Serif TC', serif; font-size: 1.8rem; color: var(--primary-warm); text-align: center; margin-bottom: 25px; }
 .story-slogan-gold { text-align: center; font-family: 'Noto Serif TC', serif; font-weight: 700; margin-bottom: 40px; }
 .drop-cap::first-letter { font-family: 'Noto Serif TC', serif; font-size: 3.2rem; float: left; margin-right: 12px; color: var(--primary-warm); line-height: 1; }
 .story-detail-grid { margin-top: 50px; display: grid; gap: 40px; }
 .story-detail-item h3 { color: var(--primary-warm); margin-bottom: 10px; text-align: center; font-size: 1.1rem; font-family: 'Noto Serif TC', serif; }
-.story-detail-item h3 span { opacity: 0.5; font-size: 0.8rem; margin-right: 10px; border-bottom: 1px solid var(--primary-warm); }
+.story-detail-item .num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-style: italic;
+  color: var(--primary-warm);
+  opacity: 0.25;
+  display: block;
+  margin-bottom: 8px;
+  line-height: 1;
+}
 
 /* --- 統一標題 --- */
 .section-title, .gallery-title {
