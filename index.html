@@ -196,6 +196,15 @@
     0%, 100% { transform: translateX(-50%) translateY(0); }
     50% { transform: translateX(-50%) translateY(6px); }
 }
+        .hero-subtext {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(0.85rem, 1.8vw, 1rem);
+    color: #8c7268;
+    letter-spacing: 1.5px;
+    margin-bottom: 36px;
+    font-style: italic;
+    opacity: 0.85;
+}
 
 /* ═══════════════════════════════════════
    TYPE CARDS WITH IMAGES
@@ -417,6 +426,7 @@
         <img src="https://res.cloudinary.com/dkon1zhws/image/upload/Logo.png" alt="RongRi Logo" class="hero-logo" fetchpriority="high">
         <h1 class="hero-brand-name">RongRi 絨日｜羊毛氈手作</h1>
         <p class="hero-slogan">將記憶收進木框，讓生命力破框而出</p>
+        <p class="hero-subtext">「好怕哪天會忘記牠的樣子⋯⋯」</p>
         <div class="hero-cta-group">
             <a href="#process" class="hero-btn-primary">立即訂製</a>
             <a href="#gallery" class="hero-btn-secondary">欣賞作品</a>
@@ -1335,7 +1345,30 @@ setTimeout(()=>{
         else schedNext(4000);
       },delay);
     }
+// ─── Section 導覽對話 ───
+const sectionDialogs = {
+  about:   ["這是絨日的故事～想更了解我們嗎？🐑", "每一針都是愛 💕"],
+  shop:    ["這裡可以直接買現貨喔！🛍️", "Pinkoi 和蝦皮都有～"],
+  process: ["想做一隻像你家的嗎？🧶", "把你家孩子的照片準備好！📸"],
+  contact: ["有問題直接找老闆！她不咬人的 😊", "LINE 回覆最快喔 📬"],
+};
 
+Object.entries(sectionDialogs).forEach(([id, lines]) => {
+  const el = document.getElementById(id);
+  if (!el || !('IntersectionObserver' in window)) return;
+  let triggered = false;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !triggered && !isDragging && !isBusy) {
+        triggered = true;
+        const line = lines[Math.floor(rnd(lines.length))];
+        showDlg(line, 5000);
+        setTimeout(() => { triggered = false; }, 20000); // 20秒後可再觸發
+      }
+    });
+  }, { threshold: 0.3 });
+  obs.observe(el);
+});
     let galleryTriggered=false;
     const gallerySection=document.getElementById('gallery');
     if(gallerySection&&'IntersectionObserver' in window){
