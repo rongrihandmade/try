@@ -334,3 +334,60 @@ footer { padding: 40px 20px; background: #f9f6f2; text-align: center; border-top
   letter-spacing: 0.05em;
   line-height: 2;
 }
+
+.hero-slogan {
+    margin-bottom: 12px;
+}
+
+@media (max-width: 600px) {
+    .drop-cap::first-letter {
+        font-size: 1rem;
+        float: none;
+        margin-right: 0;
+    }
+}
+
+.story-slogan-gold {
+    font-style: italic;
+    font-size: 1.15rem;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(166,139,124,0.3);
+    margin-bottom: 36px;
+    color: var(--primary-warm);
+}
+
+.story-border-box {
+    padding-bottom: 48px;
+}
+
+@media (max-width: 600px) {
+    .story-border-box {
+        padding: 50px 20px 48px;
+    }
+
+    .combined-grid {
+        gap: 2rem;
+    }
+
+    .step-item {
+        gap: 1rem;
+    }
+
+    .notice-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .lead-time-banner {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+    }
+
+    .price-card-body {
+        padding: 1.2rem 1rem;
+    }
+
+    .process-pricing-section {
+        padding: 60px 0;
+    }
+}
