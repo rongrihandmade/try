@@ -23,7 +23,9 @@
     <meta name="twitter:title" content="絨日 RongRi｜台南羊毛氈手作">
     <meta name="twitter:description" content="將記憶收進木框，讓生命力破框而出。">
 <meta name="twitter:image" content="https://res.cloudinary.com/dkon1zhws/image/upload/Logo.png">
-    <script type="application/ld+json">
+   
+
+ <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -480,22 +482,26 @@
   <svg class="deco-right" width="36" height="20" viewBox="0 0 36 20"><path d="M4 10 Q14 2 22 10 Q28 16 34 10" stroke="#a68b7c" stroke-width="1.2" fill="none" opacity=".5" stroke-linecap="round"/><circle cx="34" cy="10" r="2" fill="#a68b7c" opacity=".4"/></svg>
 </h2>
         <p class="story-slogan-gold">將記憶收進木框，讓生命力破框而出。</p>
-        <div class="story-main-text">
-<p style="font-family:'Noto Serif TC',serif; font-size:0.9rem; color:#8c7268; font-style:italic; margin-bottom:20px; text-align:center; opacity:0.8;">「如果可以，我想再摸摸牠一次⋯⋯」</p>
-<p class="drop-cap">很多人來找我們，有時不只是為了擁有一件作品，而是開始害怕，有一天會慢慢忘記牠的樣子。我們做的，是把那些還沒準備好放下的想念，變成可以被握在手心裡的存在。</p>            
-            <div class="story-detail-grid">
-  <div class="story-detail-item">
-    <span class="num">01</span>
-    <h3>品牌理念：生命力與溫度</h3>
-    <p>手作的魅力在於那些無法被完全複製的細微之處。生命力往往存在於框架之外，因此我們的作品不僅是單純的模仿，更是捕捉那些靈動特徵，讓作品在框架之外，展現出獨有的生命力。</p>
-  </div>
-  <div class="story-detail-item">
-    <span class="num">02</span>
-    <h3>我們的堅持：每一份唯一</h3>
-    <p>在「絨日」，每一件作品都是慢工細活的結晶。從觀察神態、選色到塑形，我們投入大量的時間與耐心，確保每一隻創作出的小生命都擁有獨一無二的靈魂。</p>
+       <div class="story-main-text">
+  <p style="font-family:'Noto Serif TC',serif; font-size:0.9rem; color:#8c7268; font-style:italic; margin-bottom:20px; text-align:center; opacity:0.8;">
+    「如果可以，我想再摸摸牠一次⋯⋯」
+  </p>
+  <p class="drop-cap">
+    很多人來找我們，不只是為了擁有一件作品，而是害怕有一天會忘記牠的樣子。我們做的，是把那些還沒準備好放下的想念，變成可以被握在手心裡的存在。
+  </p>
+  <div class="story-detail-grid">
+    <div class="story-detail-item">
+      <span class="num">01</span>
+      <h3>生命力與溫度</h3>
+      <p>手作的魅力在於那些無法被複製的細微之處。我們不只模仿外形，更捕捉那些靈動特徵，讓作品在框架之外展現獨有的生命力。</p>
+    </div>
+    <div class="story-detail-item">
+      <span class="num">02</span>
+      <h3>每一份都是唯一</h3>
+      <p>從觀察神態、選色到塑形，每一件都是慢工細活的結晶。我們投入大量時間與耐心，確保每一隻都擁有獨一無二的靈魂。</p>
+    </div>
   </div>
 </div>
-        </div>
     </div>
 </section>
 
@@ -727,10 +733,11 @@
 
 <button id="scrollTopBtn" title="回到頂端">TOP</button>
 
+<button id="hamster-toggle-btn" title="顯示／隱藏倉鼠" aria-label="顯示或隱藏倉鼠">🐹</button>
+
 <a href="https://lin.ee/s0l2IFG" target="_blank" rel="noopener noreferrer" id="float-line-btn" aria-label="LINE 線上諮詢">
   <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" alt="LINE">
 </a>
-
 <!-- ═══ 倉鼠 ═══ -->
 <div id="hamster-pet-container">
   <div id="pet-body">
@@ -838,6 +845,41 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+
+// ── GA4 事件追蹤 ──
+  var floatLine = document.getElementById('float-line-btn');
+  if(floatLine) floatLine.addEventListener('click', function() {
+    gtag('event', 'contact_click', { method: 'LINE', location: '浮動按鈕' });
+  });
+
+  var lineCard = document.querySelector('.line-card');
+  if(lineCard) lineCard.addEventListener('click', function() {
+    gtag('event', 'contact_click', { method: 'LINE', location: '聯絡區塊' });
+  });
+
+  var ctaLine = document.querySelector('.btn-cta-line');
+  if(ctaLine) ctaLine.addEventListener('click', function() {
+    gtag('event', 'contact_click', { method: 'LINE', location: '流程區CTA' });
+  });
+
+  var heroBtn = document.querySelector('.hero-btn-primary');
+  if(heroBtn) heroBtn.addEventListener('click', function() {
+    gtag('event', 'cta_click', { location: 'Hero主按鈕' });
+  });
+
+  document.querySelectorAll('.gallery-item').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var label = el.querySelector('.gallery-label');
+      gtag('event', 'gallery_view', { item_name: label ? label.textContent : '未知' });
+    });
+  });
+
+  document.querySelectorAll('.btn-shop').forEach(function(el) {
+    el.addEventListener('click', function() {
+      gtag('event', 'shop_click', { platform: el.textContent.trim() });
+    });
+  });
+
 
   // ─── Hero Carousel ───
   (function(){
@@ -1864,6 +1906,7 @@ setTimeout(()=>{ sectionDlgCooldown = false; }, 8000);  // ← 新增這行
         }, i * 90);
       }
     } catch(e){}
+
   }
 
   // 掛載到倉鼠點擊
