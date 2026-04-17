@@ -411,3 +411,199 @@ footer { padding: 40px 20px; background: #f9f6f2; text-align: center; border-top
         transform: scale(1.05) translateY(-4px);
     }
 }
+
+
+/* ── 1. 修正 scroll-margin-top，避免被 nav 擋住 ── */
+#about {
+  scroll-margin-top: 80px;
+}
+@media (max-width: 600px) {
+  #about {
+    scroll-margin-top: 70px;
+  }
+}
+ 
+/* ── 2. Brand Story 手機版精簡佈局 ── */
+@media (max-width: 600px) {
+ 
+  /* 品牌故事整體縮減內距 */
+  .about-story-curated {
+    margin-bottom: 60px;
+  }
+ 
+  .story-border-box {
+    padding: 44px 18px 36px;
+  }
+ 
+  /* slogan 縮小 */
+  .story-slogan-gold {
+    font-size: 1rem;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+  }
+ 
+  /* 主文 drop-cap 取消，避免排版亂掉 */
+  .story-main-text .drop-cap::first-letter {
+    font-size: 1rem;
+    float: none;
+    margin-right: 0;
+  }
+ 
+  /* 手機版：兩欄改一欄，縮減 padding */
+  .story-detail-grid {
+    grid-template-columns: 1fr;
+    margin-top: 0;
+  }
+ 
+  .story-detail-item {
+    padding: 24px 0 20px;
+  }
+ 
+  .story-detail-item:first-child {
+    border-right: none;
+    border-bottom: 1px solid rgba(166,139,124,0.18);
+  }
+ 
+  /* 數字裝飾縮小 */
+  .story-detail-item .num {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+  }
+ 
+  .story-detail-item h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+ 
+  .story-detail-item p {
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: var(--text-light);
+  }
+ 
+  /* 主文縮短字距、行高收緊 */
+  .story-main-text p {
+    font-size: 0.9rem;
+    line-height: 1.95;
+  }
+ 
+  /* 引言斜體隱藏（手機版不顯示，太擁擠） */
+  .story-main-text p[style*="italic"] {
+    display: none;
+  }
+}
+ 
+/* ── 3. 作品集手機版優化 ── */
+@media (max-width: 600px) {
+ 
+  .gallery-section {
+    padding: 60px 0;
+  }
+ 
+  /* 固定兩欄，縮小 gap */
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    padding: 0 12px !important;
+  }
+ 
+  /* 圖片比例改正方形，填滿且清晰 */
+  .gallery-item {
+    border-radius: 10px;
+    aspect-ratio: 1 / 1;
+  }
+ 
+  .gallery-item img {
+    border-radius: 10px;
+  }
+ 
+  /* 觸控 overlay 精簡：只顯示名稱，拿掉引言 */
+  .gallery-quote {
+    display: none;
+  }
+ 
+  /* 觸控 active 狀態維持輕量 */
+  .gallery-item.touch-active .gallery-overlay {
+    opacity: 1;
+    transform: none;
+    border-radius: 10px;
+  }
+ 
+  .gallery-item.touch-active img {
+    transform: none;
+  }
+ 
+  /* overlay label 字號稍小 */
+  .gallery-overlay .gallery-label {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    letter-spacing: 0.05em;
+  }
+ 
+  /* hover 動畫手機上取消（避免卡） */
+  .gallery-item:hover img {
+    transform: none;
+  }
+  .gallery-item:hover .gallery-overlay {
+    opacity: 0;
+    transform: none;
+  }
+ 
+  /* hint 文字縮小 */
+  .gallery-hint {
+    font-size: 0.7rem;
+    margin-bottom: 20px;
+  }
+}
+ 
+/* ── 4. 倉鼠開關按鈕 ── */
+#hamster-toggle-btn {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(166,139,124,0.15);
+  border: 1px solid rgba(166,139,124,0.35);
+  cursor: pointer;
+  z-index: 10100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  transition: background 0.2s, opacity 0.2s;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+ 
+#hamster-toggle-btn:hover {
+  background: rgba(166,139,124,0.28);
+}
+ 
+#hamster-toggle-btn.hamster-off {
+  opacity: 0.45;
+}
+ 
+/* 倉鼠隱藏狀態 */
+#hamster-pet-container.hamster-hidden {
+  display: none !important;
+}
+#paw-layer.hamster-hidden,
+#particle-layer.hamster-hidden,
+#dark-glow.hamster-hidden {
+  display: none !important;
+}
+ 
+@media (max-width: 600px) {
+  #hamster-toggle-btn {
+    bottom: 76px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+}
+ 
+
